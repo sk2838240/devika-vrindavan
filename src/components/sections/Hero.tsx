@@ -12,9 +12,12 @@ export default function Hero() {
           muted
           loop
           playsInline
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
           className="absolute inset-0 w-full h-full object-cover object-center"
+          style={{ pointerEvents: "none" }}
         >
-          <source src="/images/newherosectionvideo.mp4" type="video/mp4" />
+          <source src="https://res.cloudinary.com/uei4vwcd/video/upload/v1784269891/newherosectionvideo_grvqwo.mp4" type="video/mp4" />
         </video>
         {/* Subtle warm overlay for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/10" />
