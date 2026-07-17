@@ -24,17 +24,7 @@ export default function Hero() {
 
         {/* Headline positioned across the hero */}
         <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-            className="display-heading text-white text-[24px] sm:text-[30px] md:text-[40px] lg:text-[46px] drop-shadow-[0_2px_18px_rgba(0,0,0,0.25)] leading-tight max-w-4xl"
-            style={{ letterSpacing: "0.05em" }}
-          >
-            A Spiritual Homecoming
-            <br />
-            Reserved For A Blessed Few
-          </motion.h1>
+          
         </div>
 
         {/* Social rail */}
