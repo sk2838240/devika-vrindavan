@@ -6,12 +6,12 @@ import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
 
 const suites = [
-  { src: "/images/images/TWB - Residences.jpg", alt: "Luxury bedroom suite" },
-  { src: "/images/images/TWB - Soulful Residences - Studio.jpg", alt: "Premium bedding detail" },
-  { src: "/images/images/TWB - Suite - Living Room_.png", alt: "Signature suite balcony view" },
-  { src: "/images/images/TWB Garden_.png", alt: "Curated bath sanctuary" },
-  { src: "/images/images/TWB Suite - Private Lawn Terrace view.png", alt: "Designer interior detail" },
-  { src: "/images/images/TWB Suite_.jpg", alt: "Designer interior detail" },
+  { src: "/images/images/TWB - Residences.jpg", alt: "Luxury bedroom suite", label: "TWB - Residences" },
+  { src: "/images/images/TWB - Soulful Residences - Studio.jpg", alt: "Premium bedding detail", label: "TWB - Soulful Residences - Studio" },
+  { src: "/images/images/TWB - Suite - Living Room_.png", alt: "Signature suite balcony view", label: "TWB - Suite - Living Room" },
+  { src: "/images/images/TWB Garden_.png", alt: "Curated bath sanctuary", label: "TWB Garden" },
+  { src: "/images/images/TWB Suite - Private Lawn Terrace view.png", alt: "Designer interior detail", label: "TWB Suite - Private Lawn Terrace view" },
+  { src: "/images/images/TWB Suite_.jpg", alt: "Designer interior detail", label: "TWB Suite" },
 ];
 
 const slides = [...suites, ...suites, ...suites, ...suites, ...suites];
@@ -151,16 +151,22 @@ export default function SignatureSuites() {
 
       {/* Bottom text */}
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
-        <motion.h3
-          key={selected}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="display-heading text-[20px] md:text-[26px] text-copper-deep mt-12 text-center"
-          style={{ letterSpacing: "0.08em", fontWeight: 700 }}
-        >
-          Signature Suites
-        </motion.h3>
+        {(() => {
+          const originalIndex = selected % suites.length;
+          const currentLabel = suites[originalIndex]?.label || "Signature Suites";
+          return (
+            <motion.h3
+              key={selected}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="display-heading text-[20px] md:text-[26px] text-copper-deep mt-12 text-center"
+              style={{ letterSpacing: "0.08em", fontWeight: 700 }}
+            >
+              {currentLabel}
+            </motion.h3>
+          );
+        })()}
         <p className="body-serif italic text-[14px] md:text-[15px] text-ink mt-2 text-center" style={{ fontWeight: 500 }}>
           Each designed to bring comfort, elegance and tranquillity together.
         </p>
