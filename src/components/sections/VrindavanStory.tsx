@@ -19,6 +19,12 @@ export default function VrindavanStory() {
           sizes="100vw"
           className="object-cover object-center opacity-90"
         />
+        <span
+          className="absolute bottom-3 right-4 text-[10px] tracking-[0.18em] uppercase text-white/80 drop-shadow-md"
+          style={{ fontFamily: "var(--font-montserrat)" }}
+        >
+          *An Artistic Impression
+        </span>
         <div className="absolute inset-0 bg-gradient-to-r from-cream-50/30 via-cream-50/55 to-cream-50/30" />
       </div>
 

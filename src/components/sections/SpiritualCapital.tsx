@@ -86,6 +86,12 @@ export default function SpiritualCapital() {
                           sizes="(min-width:1024px) 40vw, 80vw"
                           className="object-cover"
                         />
+                        <span
+                          className="absolute bottom-2 right-3 text-[8px] tracking-[0.15em] uppercase text-white/80 drop-shadow-md"
+                          style={{ fontFamily: "var(--font-montserrat)" }}
+                        >
+                          *An Artistic Impression
+                        </span>
                         <motion.div
                           animate={{
                             opacity: isActive ? 0 : 0.65,

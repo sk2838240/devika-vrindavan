@@ -58,13 +58,21 @@ export default function Philosophy() {
             transition={{ duration: 1.4, delay: 0.2 }}
             className="lg:col-span-4 flex justify-center items-center"
           >
-            <Image
-              src="/images/icon.png"
-              alt="The White Butter Insignia"
-              width={160}
-              height={230}
-              className="object-contain"
-            />
+            <div className="relative">
+              <Image
+                src="/images/icon.png"
+                alt="The White Butter Insignia"
+                width={160}
+                height={230}
+                className="object-contain"
+              />
+              <span
+                className="absolute bottom-0 right-0 text-[8px] tracking-[0.15em] uppercase text-ink/60 drop-shadow-md"
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
+                *An Artistic Impression
+              </span>
+            </div>
           </motion.div>
 
           {/* Right column - The Insignia */}
