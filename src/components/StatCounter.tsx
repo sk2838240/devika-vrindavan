@@ -41,6 +41,7 @@ export default function StatCounter({
     <motion.span
       ref={ref}
       className="tabular-nums"
+      style={{ fontFamily: "var(--font-cinzel)" }}
     >
       {prefix}
       {display.toFixed(decimals)}
