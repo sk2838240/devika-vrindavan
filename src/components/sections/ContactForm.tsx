@@ -1,28 +1,27 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+
+const FORMSPREE_URL = "https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("sending");
 
     const form = e.currentTarget;
-    const data = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
-    };
+    const formData = new FormData(form);
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(FORMSPREE_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
       if (res.ok) {
@@ -68,6 +67,9 @@ export default function ContactForm() {
           onSubmit={handleSubmit}
           className="copper-frame p-8 md:p-12 space-y-6 bg-white/40"
         >
+          <input type="hidden" name="_subject" value="New Enquiry from White Butter Website" />
+          <input type="hidden" name="_captcha" value="false" />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="eyebrow text-[10px] block mb-1.5 text-copper">

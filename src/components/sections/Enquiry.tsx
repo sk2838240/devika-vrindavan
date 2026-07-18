@@ -97,6 +97,40 @@ export default function Enquiry() {
 }
 
 function EnquiryModal({ onClose }: { onClose: () => void }) {
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch("https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (res.ok) {
+        setStatus("sent");
+        setTimeout(() => {
+          onClose();
+          setStatus("idle");
+        }, 1500);
+      } else {
+        setStatus("error");
+        setTimeout(() => setStatus("idle"), 4000);
+      }
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 4000);
+    }
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -132,12 +166,11 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
 
         <form
           className="space-y-5"
-          onSubmit={(e) => {
-            e.preventDefault();
-            alert("Thank you. We will be in touch shortly.");
-            onClose();
-          }}
+          onSubmit={handleSubmit}
         >
+          <input type="hidden" name="_subject" value="New Invitation Request from White Butter Website" />
+          <input type="hidden" name="_captcha" value="false" />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field label="Name" name="name" required />
             <Field label="Mobile" name="mobile" type="tel" required />
@@ -166,11 +199,23 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
 
           <button
             type="submit"
-            className="w-full mt-4 px-6 py-3.5 bg-copper text-cream-50 text-[11px] tracking-[0.28em] uppercase hover:bg-copper-deep transition-colors"
+            disabled={status === "sending"}
+            className="w-full mt-4 px-6 py-3.5 bg-copper text-cream-50 text-[11px] tracking-[0.28em] uppercase hover:bg-copper-deep transition-colors disabled:opacity-60"
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
-            Begin The Conversation
+            {status === "sending" ? "Sending..." : "Begin The Conversation"}
           </button>
+
+          {status === "sent" && (
+            <p className="text-center body-serif text-[15px] text-copper-deep">
+              Thank you! We will be in touch shortly.
+            </p>
+          )}
+          {status === "error" && (
+            <p className="text-center body-serif text-[15px] text-red-700">
+              Something went wrong. Please try again.
+            </p>
+          )}
         </form>
       </motion.div>
     </motion.div>
