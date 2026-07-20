@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const interests = [
   "Luxury Studio",
@@ -13,6 +13,14 @@ const interests = [
 
 export default function Enquiry() {
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    function handleOpenModal(e: Event) {
+      setModalOpen(true);
+    }
+    window.addEventListener("openEnquiryModal", handleOpenModal);
+    return () => window.removeEventListener("openEnquiryModal", handleOpenModal);
+  }, []);
 
   return (
     <section
@@ -106,21 +114,38 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    try {
-      const res = await fetch("https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      });
+    // Get interests as array
+    const interests = formData.getAll("interest") as string[];
 
-      if (res.ok) {
+    // Data for Google Sheets
+    const sheetData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("mobile"),
+      city: formData.get("city"),
+      message: "",
+      interests: interests,
+      source: "Enquiry Modal"
+    };
+
+    try {
+      // Send to both endpoints in parallel
+      const [formSubmitRes, sheetRes] = await Promise.all([
+        fetch("https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com", {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        }),
+        fetch("https://script.google.com/macros/s/AKfycbxKIOknQVQldpu68sqVfDBbYfoKf0SDv9SbqXx6Muw0azEb3l727s3zaFBn5OKsyX-Jsw/exec", {
+          method: "POST",
+          body: JSON.stringify(sheetData),
+          headers: { "Content-Type": "application/json" },
+        })
+      ]);
+
+      // Check if at least one succeeded
+      if (formSubmitRes.ok || sheetRes.ok || sheetRes.status === 302 || sheetRes.status === 0) {
         setStatus("sent");
-        setTimeout(() => {
-          onClose();
-          setStatus("idle");
-        }, 1500);
       } else {
         setStatus("error");
         setTimeout(() => setStatus("idle"), 4000);
@@ -207,9 +232,20 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
           </button>
 
           {status === "sent" && (
-            <p className="text-center body-serif text-[15px] text-copper-deep">
-              Thank you! We will be in touch shortly.
-            </p>
+            <div className="text-center space-y-4">
+              <p className="body-serif text-[15px] text-copper-deep">
+                Thank you! We will be in touch shortly.
+              </p>
+              <a
+                href="https://drive.google.com/your-brochure-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 bg-copper-deep text-cream-50 text-[11px] tracking-[0.2em] uppercase hover:bg-copper transition-colors"
+                style={{ fontFamily: "var(--font-montserrat)" }}
+              >
+                Download Brochure
+              </a>
+            </div>
           )}
           {status === "error" && (
             <p className="text-center body-serif text-[15px] text-red-700">

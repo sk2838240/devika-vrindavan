@@ -3,7 +3,8 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const FORMSPREE_URL = "https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com";
+const FORMSUBMIT_URL = "https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKIOknQVQldpu68sqVfDBbYfoKf0SDv9SbqXx6Muw0azEb3l727s3zaFBn5OKsyX-Jsw/exec";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -15,16 +16,33 @@ export default function ContactForm() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    try {
-      const res = await fetch(FORMSPREE_URL, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
-      });
+    // Data for Google Sheets
+    const sheetData = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      subject: formData.get("subject"),
+      message: formData.get("message"),
+      source: "Contact Form"
+    };
 
-      if (res.ok) {
+    try {
+      // Send to both endpoints in parallel
+      const [formSubmitRes, sheetRes] = await Promise.all([
+        fetch(FORMSUBMIT_URL, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        }),
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(sheetData),
+          headers: { "Content-Type": "application/json" },
+        })
+      ]);
+
+      // Check if at least one succeeded
+      if (formSubmitRes.ok || sheetRes.ok || sheetRes.status === 302 || sheetRes.status === 0) {
         setStatus("sent");
         form.reset();
         setTimeout(() => setStatus("idle"), 5000);
