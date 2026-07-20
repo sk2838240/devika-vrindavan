@@ -237,7 +237,7 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
                 Thank you! We will be in touch shortly.
               </p>
               <a
-                href="https://drive.google.com/your-brochure-link"
+                href="/images/The White Butter Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-6 py-3 bg-copper-deep text-cream-50 text-[11px] tracking-[0.2em] uppercase hover:bg-copper transition-colors"
