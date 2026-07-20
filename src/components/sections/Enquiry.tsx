@@ -15,6 +15,7 @@ export default function Enquiry() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     function handleOpenModal(_e: Event) {
       setModalOpen(true);
     }
