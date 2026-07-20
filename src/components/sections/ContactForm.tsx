@@ -120,6 +120,8 @@ export default function ContactForm() {
               <input
                 type="tel"
                 name="phone"
+                required
+                pattern="[0-9]{6,15}"
                 className="w-full bg-transparent border-b border-copper/40 focus:border-copper py-2.5 text-ink body-serif text-[16px] outline-none transition-colors"
                 placeholder="+91 XXXXX XXXXX"
               />
@@ -131,6 +133,7 @@ export default function ContactForm() {
               <input
                 type="text"
                 name="subject"
+                required
                 className="w-full bg-transparent border-b border-copper/40 focus:border-copper py-2.5 text-ink body-serif text-[16px] outline-none transition-colors"
                 placeholder="How can we help?"
               />

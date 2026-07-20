@@ -199,7 +199,7 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field label="Name" name="name" required />
-            <Field label="Mobile" name="mobile" type="tel" required />
+            <Field label="Mobile" name="mobile" type="tel" required pattern="[0-9]{6,15}" />
             <Field label="Email" name="email" type="email" required />
             <Field label="City" name="city" required />
           </div>
@@ -264,11 +264,13 @@ function Field({
   name,
   type = "text",
   required = false,
+  pattern,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
+  pattern?: string;
 }) {
   return (
     <div>
@@ -279,6 +281,7 @@ function Field({
         type={type}
         name={name}
         required={required}
+        pattern={pattern}
         className="w-full bg-transparent border-b border-copper/40 focus:border-copper py-2 text-ink body-serif text-[16px] outline-none transition-colors"
       />
     </div>
