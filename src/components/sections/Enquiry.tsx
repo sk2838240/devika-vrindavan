@@ -15,7 +15,7 @@ export default function Enquiry() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    function handleOpenModal(e: Event) {
+    function handleOpenModal(_e: Event) {
       setModalOpen(true);
     }
     window.addEventListener("openEnquiryModal", handleOpenModal);
