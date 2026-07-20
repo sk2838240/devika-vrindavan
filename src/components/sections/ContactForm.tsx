@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const FORMSUBMIT_URL = "https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKIOknQVQldpu68sqVfDBbYfoKf0SDv9SbqXx6Muw0azEb3l727s3zaFBn5OKsyX-Jsw/exec";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -28,13 +27,13 @@ export default function ContactForm() {
 
     try {
       // Send to both endpoints in parallel
-      const [formSubmitRes, sheetRes] = await Promise.all([
+      const [formSubmitRes, apiRes] = await Promise.all([
         fetch(FORMSUBMIT_URL, {
           method: "POST",
           body: formData,
           headers: { Accept: "application/json" },
         }),
-        fetch(GOOGLE_SCRIPT_URL, {
+        fetch("/api/contact", {
           method: "POST",
           body: JSON.stringify(sheetData),
           headers: { "Content-Type": "application/json" },
@@ -42,7 +41,7 @@ export default function ContactForm() {
       ]);
 
       // Check if at least one succeeded
-      if (formSubmitRes.ok || sheetRes.ok || sheetRes.status === 302 || sheetRes.status === 0) {
+      if (formSubmitRes.ok || apiRes.ok) {
         setStatus("sent");
         form.reset();
         setTimeout(() => setStatus("idle"), 5000);

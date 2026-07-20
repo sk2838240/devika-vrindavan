@@ -131,13 +131,13 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
 
     try {
       // Send to both endpoints in parallel
-      const [formSubmitRes, sheetRes] = await Promise.all([
+      const [formSubmitRes, apiRes] = await Promise.all([
         fetch("https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com", {
           method: "POST",
           body: formData,
           headers: { Accept: "application/json" },
         }),
-        fetch("https://script.google.com/macros/s/AKfycbxKIOknQVQldpu68sqVfDBbYfoKf0SDv9SbqXx6Muw0azEb3l727s3zaFBn5OKsyX-Jsw/exec", {
+        fetch("/api/contact", {
           method: "POST",
           body: JSON.stringify(sheetData),
           headers: { "Content-Type": "application/json" },
@@ -145,7 +145,7 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
       ]);
 
       // Check if at least one succeeded
-      if (formSubmitRes.ok || sheetRes.ok || sheetRes.status === 302 || sheetRes.status === 0) {
+      if (formSubmitRes.ok || apiRes.ok) {
         setStatus("sent");
       } else {
         setStatus("error");
