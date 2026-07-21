@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const FORMSUBMIT_URL = "https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com";
+const FORMSUBMIT_URL = "https://formsubmit.co/marketing@devikagroup.com";
 
 export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");

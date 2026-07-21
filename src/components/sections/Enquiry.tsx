@@ -132,7 +132,7 @@ function EnquiryModal({ onClose }: { onClose: () => void }) {
     try {
       // Send to both endpoints in parallel
       const [formSubmitRes, apiRes] = await Promise.all([
-        fetch("https://formsubmit.co/marketing@devikagroup.com?cc=rohit@searchmodifiers.com", {
+        fetch("https://formsubmit.co/marketing@devikagroup.com", {
           method: "POST",
           body: formData,
           headers: { Accept: "application/json" },
