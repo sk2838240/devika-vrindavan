@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Montserrat } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 
@@ -41,9 +42,21 @@ export default function RootLayout({
       lang="en"
       className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable}`}
     >
+      <head>
+        <meta name="google-site-verification" content="sx9JrFn1UG6kCrO_w9PyEPtDOlQvNXVEhPrcIXXujJc" />
+      </head>
       <body className="antialiased bg-cream-50 text-ink">
         <SmoothScroll />
         {children}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-E6V0WPEP6E" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-E6V0WPEP6E');
+          `}
+        </Script>
       </body>
     </html>
   );
