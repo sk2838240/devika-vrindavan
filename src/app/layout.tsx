@@ -69,7 +69,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/images/icon.png",
-    appleIcon: "/images/icon.png",
   },
   robots: {
     index: true,
